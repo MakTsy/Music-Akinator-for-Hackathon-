@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="uk">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Makinator</title>
+</head>
+<body>
+    <header>  
+        <h1>Music Akinator</h1>
+        <style>
+            header {
+                background: url("{% static "photos/head.png" %}");
+                background-repeat: no-repeat;
+                background-size: 100% 90px;
+                text-align: center;
+                height: 90px;
+                width: 100%;
+                }
+
+    </style>
+    </header>
+    <div class = "container-fluid">
+        <div class="row">
+            <div class="col-md-4" >
+                <div class = "think">
+                    <div class = "Dialogue" id = "Di">
+                        <div class = "text_cover" id  = "cover">                        
+                            <p>Вітаю вас, смертний! Я Музичний Акінатор!</p>        
+                            <p>Я спробую відгадати пісню, яку ви загадали.</p>
+                            <p>Якщо я цього не зроблю за три спроби, то ви</p>
+                            <p>перемогли, а якщо ж ні, то ви помрете в</p>
+                            <p>страшних муках.</p>
+                            <p>Приємної гри.</p>
+                        </div>
+                    </div>
+                    <div class = "Triangle" id = "Tr"></div>
+
+                    <div class = "Dialogue1" id = "Di1">
+                        <p>Це просто моя робота</p>
+                    </div>
+
+                    <div class = "Dialogue2" id = "Di2">
+                        <p>Розбійники вже їдуть за тобою</p>
+                    </div>
+
+                    <div class="Jin">
+                        <img src = "{% static "photos/JihnAndLamp.png" %}" alt="jin" width=300>
+                    </div>
+                </div>
+            </div>
+            
+
+
+
+            <!-- kyrwo -->
+            <div class="col-md-8">
+                <div class = "wrap">
+                    <div class = "row">
+                        <div class="col-md-12">
+                            <form method = "POST" id = "text_input">
+                                {% csrf_token %}
+                                {{ form }}
+                                <input id="find"  onclick="find()" type ="submit" name="send" value="Знайти!" />
+                            </form>
+                        </div>
+                    </div>
+                    {% block content%}
+                    <div class = "row">
+                        <div class = "col-md-12">
+                            <div class = "text">
+                                <h2>Я вгадав ваше бажання?</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class = "row">
+                        <div class="col-md-7">
+                            <div class = "row justify-content-center row1">
+                                <p>{{text}}</p>
+                            </div>
+                            <div class = "row">
+                                <div id="player"></div>
+                            </div>
+                            <div class = "row justify-content-center row2">
+                                <p>Відео не загрузилося? <a target="_blanc" href={{cation}} >Посилання</a></p>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class = "row align-items-center buttons">
+                                <div class = "col">
+                                    <button id="tak" onclick="Tak('photos/lamp1.png')"  type="submit"  name="confirm" value ="ТАК">ТАК</button>
+                            </div>
+                            <div class = "col">
+                                    <button  id="ni" onclick="Ni('photos/lamp2.png')" type="submit" name="calced" value="НІ">НІ</button>
+                            </div>
+                            </div>
+                        </div> 
+                    </div>
+
+   
+
+                    <div class = "row">
+                        <div class="col-md-12">
+                            <div class = "text">
+                                <h2>Наш рахунок</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-md-4 lamp">
+                            <img id="lamp1" src="{% static "photos/lamp0.png" %}" alt="lamp" width="110px">
+                        </div>
+                        <div class="col-md-4 lamp">
+                            <img id="lamp2" src="{% static "photos/lamp0.png" %}" alt="lamp" width="110px">
+                        </div>
+                        <div class="col-md-4 lamp">
+                            <img  id="lamp3" src="{% static "photos/lamp0.png" %}" alt="lamp" width="110px">
+                        </div>
+                    </div>
+                    {% endblock content %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    var tag = document.createElement('script');
+                            
+                            tag.src = "https://www.youtube.com/iframe_api";
+                            var firstScriptTag = document.getElementsByTagName('script')[0];
+                            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                    
+                            var player;
+                            function onYouTubeIframeAPIReady() {
+                            player = new YT.Player('player', {
+                                // height: '100',
+                                // width: '180',
+                                videoId: '{{videoid}}',
+                                events: {
+                                'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                                }
+                            });
+                            }
+                        
+                            function onPlayerReady(event) {
+                            event.target.playVideo();
+                            }
+                    
+                            var done = false;
+                            function onPlayerStateChange(event) {
+                            if (event.data == YT.PlayerState.PLAYING && !done) {
+                                done = true;
+                            }
+                            }
+                            function stopVideo() {
+                            player.stopVideo();
+                            }
+
+
+
+
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+  var user = getCookie("count");
+  var conTak = getCookie("contak");
+  var conNi = getCookie("conni");
+  var l1 = getCookie("lamp1");
+  var l2 = getCookie("lamp2");
+  var l3 = getCookie("lamp3");
+  if (user != "") {
+    //setCookie("count",0, 30);
+  } else {
+    user = "0";
+    if (user != "" && user != null) {
+    setCookie("count", user, 30);
+    }
+  }
+
+  if (conTak != "") {
+    //setCookie("count",0, 30);
+  } else {
+    conTak = "0";
+    if (conTak != "" && conTak != null) {
+    setCookie("contak", conTak, 30);
+    }
+  }
+
+  if (conNi != "") {
+    //setCookie("count",0, 30);
+  } else {
+    conNi = "0";
+    if (conNi != "" && conNi != null) {
+    setCookie("conni", conNi, 30);
+    }
+  }
+
+  if (l1 != "") {
+    document.getElementById('lamp1').src=l1;
+  } else {
+    l1 = 'static/photos/lamp0.png';
+    setCookie("lamp1",l1, 30);
+    document.getElementById('lamp1').src='static/photos/lamp0.png';
+  }
+
+  if (l2 != "") {
+    document.getElementById('lamp2').src=l2;
+  } else {
+    l2 = 'static/photos/lamp0.png';
+    setCookie("lamp2",l2, 30);
+    document.getElementById('lamp2').src='static/photos/lamp0.png';
+  }
+
+  if (l3 != "") {
+    document.getElementById('lamp3').src=l3;
+  } else {
+    l3 = 'static/photos/lamp0.png';
+    setCookie("lamp3",l3, 30);
+    document.getElementById('lamp3').src='static/photos/lamp0.png';
+  }
+}
+
+                            //changecolourYes();
+                            function changecolourYes() { 
+                                document.getElementById("Di").style.backgroundColor = "rgb(177, 235, 150)";
+                                document.getElementById("Tr").style.color = "rgb(177, 235, 150)";
+                                document.getElementById("cover").style.visibility = "hidden";
+                                document.getElementById("Di1").style.visibility = "visible";
+                            };
+
+
+                            //changecolourNo();
+                            function changecolourNo() { 
+                                document.getElementById("Di").style.backgroundColor = "rgb(235, 150, 150)";
+                                document.getElementById("Tr").style.color = "rgb(235, 150, 150)";
+                                document.getElementById("cover").style.visibility = "hidden";
+                                document.getElementById("Di2").style.visibility = "visible";
+                            };
+                            
+
+                            checkCookie();
+                            
+
+                            function Tak(sr)
+                            {
+                            var conTak = parseInt(getCookie("contak"),10);
+                            var count = parseInt(getCookie("count"),10);
+                            if(count < 3)
+                            {
+                            count = count + 1;
+                            conTak = conTak +1;
+                            setCookie("count", count, 30);
+                            setCookie("contak", conTak, 30);
+                            
+                            name = 'lamp'.concat(count);
+                                out = 'static/'.concat(sr);
+                                document.getElementById(name).src=out;
+                                setCookie(name, out, 30);
+                            if (count == 3){
+                                var conTak = parseInt(getCookie("contak"),10);
+                                var conNi = parseInt(getCookie("conni"),10);
+                                if(conTak > conNi){
+                                changecolourYes();
+                                }
+                                else{changecolourNo();}
+                                setCookie("contak", "0", 30);
+                                setCookie("conni", "0", 30);
+                                count = 0;
+                                setCookie("count", count, 30);
+                                setCookie("lamp1", 'static/photos/lamp0.png', 30);
+                                setCookie("lamp2", 'static/photos/lamp0.png', 30);
+                                setCookie("lamp3", 'static/photos/lamp0.png', 30);
+                                document.getElementById('lamp1').src='static/photos/lamp0.png';
+                                document.getElementById('lamp2').src='static/photos/lamp0.png';
+                                document.getElementById('lamp3').src='static/photos/lamp0.png';
+                            }
+                            
+                            }
+                            else {
+                                var count = parseInt(getCookie("count"),10);
+                                count = 0;
+                                setCookie("count", count, 30);
+                                setCookie("lamp1", 'static/photos/lamp0.png', 30);
+                                setCookie("lamp2", 'static/photos/lamp0.png', 30);
+                                setCookie("lamp3", 'static/photos/lamp0.png', 30);
+                                document.getElementById('lamp1').src='static/photos/lamp0.png';
+                                document.getElementById('lamp2').src='static/photos/lamp0.png';
+                                document.getElementById('lamp3').src='static/photos/lamp0.png';
+                                
+                                
+                            }
+                            document.getElementById("tak").disabled = true;
+                            document.getElementById("ni").disabled = true;
+                            };
+
+                            function Ni(sr)
+                            {
+                            var conNi = parseInt(getCookie("conni"),10);
+                            var count = parseInt(getCookie("count"),10);
+                            if(count < 3)
+                            {
+                            count = count + 1;
+                            conNi = conNi + 1;
+                            setCookie("count", count, 30);
+                            setCookie("conni", conNi, 30);
+                            
+                            name = 'lamp'.concat(count);
+                                out = 'static/'.concat(sr);
+                                document.getElementById(name).src=out;
+                                setCookie(name, out, 30);
+
+                                if (count == 3){
+                                var conTak = parseInt(getCookie("contak"),10);
+                                var conNi = parseInt(getCookie("conni"),10);
+                                if(conTak > conNi){
+                                changecolourYes();
+                                }
+                                else{changecolourNo();}
+                                setCookie("contak", "0", 30);
+                                setCookie("conni", "0", 30);
+                                count = 0;
+                                setCookie("count", count, 30);
+                                setCookie("lamp1", 'static/photos/lamp0.png', 30);
+                                setCookie("lamp2", 'static/photos/lamp0.png', 30);
+                                setCookie("lamp3", 'static/photos/lamp0.png', 30);
+                                document.getElementById('lamp1').src='static/photos/lamp0.png';
+                                document.getElementById('lamp2').src='static/photos/lamp0.png';
+                                document.getElementById('lamp3').src='static/photos/lamp0.png';
+                                } }
+                                else {
+                                var count = parseInt(getCookie("count"),10);
+                                count = 0;
+                                setCookie("count", count, 30);
+                                setCookie("lamp1", 'static/photos/lamp0.png', 30);
+                                setCookie("lamp2", 'static/photos/lamp0.png', 30);
+                                setCookie("lamp3", 'static/photos/lamp0.png', 30);
+                                document.getElementById('lamp1').src='static/photos/lamp0.png';
+                                document.getElementById('lamp2').src='static/photos/lamp0.png';
+                                document.getElementById('lamp3').src='static/photos/lamp0.png';
+                                
+                            }
+
+                            document.getElementById("tak").disabled = true;
+                            document.getElementById("ni").disabled = true;
+                            };
+
+                            function find()
+                            {
+                            document.getElementById("tak").disabled = false;
+                            document.getElementById("ni").disabled = false;
+                            };
+
+
+
+
+                            
+
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>
